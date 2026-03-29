@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$THELIST — Base Edition | Whitepaper + Launch Guide</title>
+<style>
+  :root {
+    --blue: #0052FF;
+    --blue-light: #4D8FFF;
+    --blue-pale: #A8C8FF;
+    --blue-glow: rgba(0,82,255,0.15);
+    --dark: #080C14;
+    --dark2: #0D1420;
+    --dark3: #131D2E;
+    --dark4: #1A2640;
+    --text: #E2E8F8;
+    --text-muted: #7A8AA8;
+    --text-dim: #3A4A62;
+    --border: rgba(0,82,255,0.18);
+    --border-strong: rgba(0,82,255,0.42);
+    --gold: #F5C842;
+    --green: #22D3A8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--dark); color: var(--text); font-family: 'Georgia', serif; line-height: 1.7; font-size: 16px; }
+  .sans { font-family: 'Arial', sans-serif; }
+  .mono { font-family: 'Courier New', monospace; }
+
+  .ticker-bar { background: var(--blue); padding: 7px 0; font-family: 'Arial', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #fff; white-space: nowrap; overflow: hidden; }
+  .ticker-inner { display: inline-block; animation: ticker 30s linear infinite; }
+  @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+  .hero { text-align: center; padding: 64px 24px 56px; background: var(--dark2); border-bottom: 1px solid var(--border-strong); }
+  .chain-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--blue-glow); border: 1px solid var(--border-strong); border-radius: 3px; padding: 6px 16px; font-family: 'Arial', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue-light); margin-bottom: 24px; }
+  h1.logo { font-size: clamp(52px,10vw,88px); font-weight: 700; letter-spacing: -0.02em; color: var(--blue-light); line-height: 1; margin-bottom: 6px; }
+  .logo-chain { font-family: 'Arial', sans-serif; font-size: 13px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 28px; }
+  .tagline { font-size: clamp(16px,2.5vw,22px); color: var(--text); max-width: 620px; margin: 0 auto 40px; font-style: italic; line-height: 1.5; }
+  .hero-stats { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; margin-top: 40px; }
+  .stat-num { font-family: 'Arial', sans-serif; font-size: 26px; font-weight: 700; color: var(--blue-light); display: block; }
+  .stat-label { font-family: 'Arial', sans-serif; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+  section:last-child { border-bottom: none; }
+
+  .section-label { font-family: 'Arial', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--blue-light); margin-bottom: 10px; }
+  h2 { font-size: clamp(24px,4vw,36px); font-weight: 700; line-height: 1.2; color: var(--text); margin-bottom: 20px; }
+  h3 { font-size: 19px; font-weight: 700; color: var(--blue-pale); margin-bottom: 12px; font-family: 'Arial', sans-serif; }
+  h4 { font-size: 15px; font-weight: 700; color: var(--blue-light); margin-bottom: 8px; font-family: 'Arial', sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
+  p { margin-bottom: 14px; }
+  p:last-child { margin-bottom: 0; }
+  strong { color: var(--blue-pale); }
+  em { color: var(--text-muted); }
+
+  .callout { background: var(--dark3); border-left: 3px solid var(--blue-light); padding: 18px 22px; margin: 28px 0; border-radius: 0 4px 4px 0; }
+  .callout p { margin: 0; font-style: italic; }
+
+  /* STEP BOXES */
+  .step-grid { display: flex; flex-direction: column; gap: 0; margin: 28px 0; }
+  .step { display: flex; gap: 20px; padding: 24px; border: 1px solid var(--border); border-bottom: none; background: var(--dark2); }
+  .step:first-child { border-radius: 4px 4px 0 0; }
+  .step:last-child { border-bottom: 1px solid var(--border); border-radius: 0 0 4px 4px; }
+  .step-num { flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: var(--blue); display: flex; align-items: center; justify-content: center; font-family: 'Arial', sans-serif; font-size: 13px; font-weight: 900; color: #fff; }
+  .step-body h4 { margin-bottom: 6px; color: var(--text); font-size: 15px; text-transform: none; letter-spacing: 0; }
+  .step-body p { font-family: 'Arial', sans-serif; font-size: 13px; color: var(--text-muted); margin: 0; line-height: 1.6; }
+  .step-body .step-cost { display: inline-block; margin-top: 8px; font-family: 'Courier New', monospace; font-size: 12px; color: var(--green); background: rgba(34,211,168,0.08); border: 1px solid rgba(34,211,168,0.2); border-radius: 3px; padding: 2px 8px; }
+
+  /* CODE BLOCK */
+  .code-block { background: #050810; border: 1px solid var(--border-strong); border-radius: 4px; padding: 20px 22px; margin: 20px 0; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.9; overflow-x: auto; }
+  .code-block .comment { color: var(--text-dim); }
+  .code-block .key { color: var(--blue-pale); }
+  .code-block .val { color: var(--green); }
+  .code-block .str { color: var(--gold); }
+  .code-block .kw { color: #C084FC; }
+  .code-block .type { color: #FB923C; }
+
+  /* TOKENOMICS */
+  .toko-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(155px,1fr)); gap: 2px; margin: 28px 0; background: var(--border); border: 1px solid var(--border-strong); border-radius: 4px; overflow: hidden; }
+  .toko-cell { background: var(--dark2); padding: 22px 18px; text-align: center; }
+  .toko-pct { font-family: 'Arial', sans-serif; font-size: 30px; font-weight: 900; color: var(--blue-light); display: block; line-height: 1; margin-bottom: 5px; }
+  .toko-name { font-family: 'Arial', sans-serif; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text); display: block; margin-bottom: 4px; }
+  .toko-desc { font-family: 'Arial', sans-serif; font-size: 11px; color: var(--text-muted); }
+
+  /* STAKING TIERS */
+  .tier-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-family: 'Arial', sans-serif; font-size: 13px; }
+  .tier-table th { background: var(--dark3); color: var(--blue-light); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border-strong); }
+  .tier-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: middle; }
+  .tier-table tr:last-child td { border-bottom: none; }
+  .tier-table tr:hover td { background: var(--dark3); }
+  .t-badge { display: inline-block; padding: 2px 9px; border-radius: 2px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+  .t0 { background: var(--dark4); color: var(--text-muted); border: 1px solid var(--border); }
+  .t1 { background: var(--blue-glow); color: var(--blue-light); border: 1px solid var(--border-strong); }
+  .t2 { background: rgba(0,82,255,0.2); color: var(--blue-pale); border: 1px solid rgba(0,82,255,0.5); }
+  .t3 { background: rgba(0,82,255,0.3); color: var(--blue-pale); border: 1px solid var(--blue-light); }
+  .t4 { background: var(--blue); color: #fff; border: 1px solid var(--blue-light); }
+
+  /* TOOL CARDS */
+  .tool-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 12px; margin: 24px 0; }
+  .tool-card { background: var(--dark3); border: 1px solid var(--border); border-radius: 4px; padding: 18px; }
+  .tool-card h4 { color: var(--green); margin-bottom: 4px; font-size: 14px; text-transform: none; letter-spacing: 0; }
+  .tool-card .tool-url { font-family: 'Courier New', monospace; font-size: 11px; color: var(--blue-light); margin-bottom: 8px; display: block; }
+  .tool-card p { font-family: 'Arial', sans-serif; font-size: 12px; color: var(--text-muted); margin: 0; }
+
+  /* ROADMAP */
+  .roadmap { position: relative; margin: 28px 0; padding-left: 28px; border-left: 2px solid var(--border-strong); }
+  .rm-item { position: relative; margin-bottom: 36px; }
+  .rm-item:last-child { margin-bottom: 0; }
+  .rm-dot { position: absolute; left: -37px; top: 4px; width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--blue); background: var(--dark); }
+  .rm-dot.done { background: var(--blue-light); border-color: var(--blue-light); }
+  .rm-phase { font-family: 'Arial', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue-light); margin-bottom: 3px; }
+  .rm-title { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 8px; font-family: 'Arial', sans-serif; }
+  .rm-items { list-style: none; font-family: 'Arial', sans-serif; font-size: 13px; color: var(--text-muted); line-height: 1.7; }
+  .rm-items li { padding-left: 14px; position: relative; }
+  .rm-items li::before { content: '—'; position: absolute; left: 0; color: var(--border-strong); }
+
+  /* WARN / TIP */
+  .warn-box { background: rgba(245,200,66,0.06); border: 1px solid rgba(245,200,66,0.28); border-radius: 4px; padding: 16px 20px; margin: 20px 0; }
+  .warn-box p { font-family: 'Arial', sans-serif; font-size: 13px; color: #E8D87A; margin: 0; }
+  .warn-box strong { color: #F5C842; }
+  .tip-box { background: rgba(34,211,168,0.06); border: 1px solid rgba(34,211,168,0.22); border-radius: 4px; padding: 16px 20px; margin: 20px 0; }
+  .tip-box p { font-family: 'Arial', sans-serif; font-size: 13px; color: var(--green); margin: 0; }
+
+  /* ADVANTAGE GRID */
+  .adv-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 14px; margin: 24px 0; }
+  .adv-card { background: var(--dark3); border: 1px solid var(--border); border-radius: 4px; padding: 20px; }
+  .adv-card h4 { color: var(--blue-pale); margin-bottom: 8px; font-size: 14px; text-transform: none; letter-spacing: 0; }
+  .adv-card p { font-family: 'Arial', sans-serif; font-size: 13px; color: var(--text-muted); margin: 0; line-height: 1.6; }
+
+  /* COST TABLE */
+  .cost-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-family: 'Arial', sans-serif; font-size: 13px; }
+  .cost-table th { background: var(--dark3); color: var(--blue-light); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-strong); }
+  .cost-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--text); }
+  .cost-table tr:last-child td { border-bottom: none; font-weight: 700; color: var(--green); }
+  .cost-amount { font-family: 'Courier New', monospace; color: var(--green); }
+
+  /* SOLIDITY HIGHLIGHT */
+  .sol-block { background: #050810; border: 1px solid var(--border-strong); border-radius: 4px; padding: 20px 22px; margin: 20px 0; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.8; overflow-x: auto; }
+  .sk { color: #C084FC; } /* keyword */
+  .st { color: #FB923C; } /* type */
+  .sf { color: var(--blue-pale); } /* function name */
+  .sv { color: var(--green); } /* variable / value */
+  .sc { color: var(--text-dim); } /* comment */
+  .ss { color: var(--gold); } /* string */
+
+  /* DISCLAIMER */
+  .disclaimer { background: var(--dark2); border-top: 2px solid #C0392B; padding: 28px 0; }
+  .disclaimer p { font-family: 'Arial', sans-serif; font-size: 12px; color: var(--text-muted); line-height: 1.6; margin-bottom: 6px; }
+  .disclaimer strong { color: #E74C3C; }
+
+  footer { background: var(--dark); border-top: 1px solid var(--border); padding: 36px 0; text-align: center; font-family: 'Arial', sans-serif; font-size: 12px; color: var(--text-dim); }
+  footer .footer-logo { font-size: 22px; font-weight: 900; color: var(--blue-light); display: block; margin-bottom: 6px; letter-spacing: -0.02em; }
+
+  @media(max-width:600px){ .hero-stats{gap:20px} .tier-table{font-size:11px} .tier-table td,.tier-table th{padding:8px 6px} }
+</style>
+</head>
+<body>
+
+<div class="ticker-bar">
+  <span class="ticker-inner">
+    &nbsp;&nbsp;$THELIST on BASE &nbsp;·&nbsp; ERC-20 · FULL SMART CONTRACT STAKING &nbsp;·&nbsp; AWARENESS MULTIPLIER &nbsp;·&nbsp; COINBASE ECOSYSTEM &nbsp;·&nbsp; THE FILES ARE ALREADY PUBLIC &nbsp;·&nbsp; $THELIST on BASE &nbsp;·&nbsp; ERC-20 · FULL SMART CONTRACT STAKING &nbsp;·&nbsp; AWARENESS MULTIPLIER &nbsp;·&nbsp; COINBASE ECOSYSTEM &nbsp;·&nbsp; THE FILES ARE ALREADY PUBLIC &nbsp;&nbsp;
+  </span>
+</div>
+
+<div class="hero">
+  <div class="chain-badge">⬡ &nbsp;Base Edition &nbsp;·&nbsp; ERC-20 Token</div>
+  <h1 class="logo">$THELIST</h1>
+  <p class="logo-chain">The List Coin &nbsp;·&nbsp; Base Network &nbsp;·&nbsp; Whitepaper v1.0</p>
+  <p class="tagline">The serious build — full DeFi stack, real staking mechanics, and the Awareness Multiplier built properly in Solidity.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">1B</span><span class="stat-label sans">Total Supply</span></div>
+    <div class="stat"><span class="stat-num">&lt;$1</span><span class="stat-label sans">Tx Fees</span></div>
+    <div class="stat"><span class="stat-num">EVM</span><span class="stat-label sans">Full Solidity Stack</span></div>
+    <div class="stat"><span class="stat-num">CB</span><span class="stat-label sans">Coinbase Native</span></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- WHY BASE -->
+  <section>
+    <div class="section-label sans">01 &nbsp;/&nbsp; Why Base for $THELIST</div>
+    <h2>The chain built for the mechanic</h2>
+    <p>
+      Base is Coinbase's Ethereum Layer 2, launched in 2023 and now one of the highest-throughput EVM chains in production. It combines near-zero transaction fees (fractions of a cent), Ethereum-grade security, and direct integration with Coinbase's 100+ million verified user base.
+    </p>
+    <p>
+      For $THELIST specifically, Base is the chain where the <strong>Awareness Multiplier actually gets built properly</strong>. The full staking contract, tiered yield mechanics, on-chain Awareness Point tracking, and DAO governance are all straightforward Solidity builds on Base — mature tooling, abundant developer talent, and a thriving DeFi ecosystem that existing memecoins have proven works (BRETT, DEGEN).
+    </p>
+    <div class="adv-grid">
+      <div class="adv-card"><h4>Coinbase user pipeline</h4><p>Americans with Coinbase accounts — the core demographic who care about Epstein accountability — are one tap away from Base. Coinbase Wallet supports Base natively.</p></div>
+      <div class="adv-card"><h4>EVM = Solidity = talent pool</h4><p>Every Ethereum developer can write Base contracts. The hiring pool is enormous vs. Solana's Rust/Anchor ecosystem or Bitcoin's Clarity.</p></div>
+      <div class="adv-card"><h4>Sub-cent fees for everyone</h4><p>Every Awareness Point submission, staking interaction, and governance vote costs fractions of a cent. No friction kills grassroots participation.</p></div>
+      <div class="adv-card"><h4>Mature DeFi infrastructure</h4><p>Uniswap v3, Aerodrome (the dominant Base DEX), Balancer, and Aave all live on Base. Your token has a full DeFi stack from day one.</p></div>
+      <div class="adv-card"><h4>Onchain Summer culture</h4><p>Base has an established NFT and memecoin culture. The "Onchain Summer" community is active and receptive to culturally resonant projects.</p></div>
+      <div class="adv-card"><h4>ENS + Basename integration</h4><p>Holders can register Basenames (yourname.base.eth) — adds identity and community belonging that matters for a mission-driven token.</p></div>
+    </div>
+    <div class="callout">
+      <p>"Base is where you build the thing you actually promised in the whitepaper. The Awareness Multiplier with tiered staking, on-chain proof submission, and DAO governance is a 2-week Solidity build on Base. On Bitcoin, it's a 6-month research project."</p>
+    </div>
+  </section>
+
+  <!-- TOKEN SPEC -->
+  <section>
+    <div class="section-label sans">02 &nbsp;/&nbsp; Token Specification</div>
+    <h2>On-chain parameters</h2>
+
+    <div class="code-block">
+      <span class="comment">// $THELIST — Base Network ERC-20 Parameters</span><br><br>
+      <span class="key">Network&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="val">Base Mainnet (Chain ID: 8453)</span><br>
+      <span class="key">Standard&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="val">ERC-20 (OpenZeppelin implementation)</span><br>
+      <span class="key">Ticker&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="val">THELIST</span><br>
+      <span class="key">Full Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="val">The List Coin</span><br>
+      <span class="key">Decimals&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="val">18 (ERC-20 standard)</span><br>
+      <span class="key">Total Supply&nbsp;&nbsp;&nbsp;</span><span class="val">1,000,000,000 × 10^18 (fixed at deployment)</span><br>
+      <span class="key">Mint Function&nbsp;&nbsp;</span><span class="val">NONE — supply fixed in constructor</span><br>
+      <span class="key">Owner&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="val">Renounced immediately after deployment</span><br>
+      <span class="key">Verified&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="val">Source code verified on Basescan</span><br>
+      <br>
+      <span class="comment">// Contract Architecture</span><br><br>
+      <span class="key">Token Contract&nbsp;</span><span class="val">TheListToken.sol (ERC-20, ownable)</span><br>
+      <span class="key">Staking Contract</span><span class="val">TheListStaking.sol (tiered APY + Awareness)</span><br>
+      <span class="key">Governance&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="val">TheListDAO.sol (Governor Bravo pattern)</span><br>
+      <span class="key">Archive&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="val">TheListArchive.sol (document hash registry)</span><br>
+      <br>
+      <span class="comment">// Distribution (pre-deployment allocation)</span><br><br>
+      <span class="key">DEX Liquidity&nbsp;&nbsp;</span><span class="val">50% — Aerodrome pool seeded at launch</span><br>
+      <span class="key">Staking Pool&nbsp;&nbsp;&nbsp;</span><span class="val">20% — locked in staking contract</span><br>
+      <span class="key">Awareness Fund&nbsp;</span><span class="val">15% — multi-sig DAO wallet</span><br>
+      <span class="key">DAO Treasury&nbsp;&nbsp;&nbsp;</span><span class="val">10% — governance-controlled</span><br>
+      <span class="key">Team/Marketing&nbsp;</span><span class="val">5%  — 12-month vesting (optional)</span><br>
+    </div>
+  </section>
+
+  <!-- TOKENOMICS -->
+  <section>
+    <div class="section-label sans">03 &nbsp;/&nbsp; Tokenomics</div>
+    <h2>Built for sustained utility</h2>
+    <p>Unlike a pure Pump.fun meme launch, Base's tokenomics are structured for longevity. The larger DEX liquidity allocation (50%) ensures price stability. The staking pool (20%) funds years of Awareness Multiplier rewards. The document archive is funded from day one.</p>
+    <div class="toko-grid">
+      <div class="toko-cell"><span class="toko-pct">50%</span><span class="toko-name sans">DEX Liquidity</span><span class="toko-desc sans">Aerodrome pool. LP tokens locked 2 years via Unicrypt.</span></div>
+      <div class="toko-cell"><span class="toko-pct">20%</span><span class="toko-name sans">Staking Pool</span><span class="toko-desc sans">Locked in staking contract. 3-year emission schedule.</span></div>
+      <div class="toko-cell"><span class="toko-pct">15%</span><span class="toko-name sans">Awareness Fund</span><span class="toko-desc sans">3-of-5 multi-sig. Community-voted grants and bounties.</span></div>
+      <div class="toko-cell"><span class="toko-pct">10%</span><span class="toko-name sans">DAO Treasury</span><span class="toko-desc sans">Governor Bravo governance. Time-locked 48h execution.</span></div>
+      <div class="toko-cell"><span class="toko-pct">5%</span><span class="toko-name sans">Team</span><span class="toko-desc sans">12-month cliff, 24-month vesting. Fully on-chain. Optional — set to 0 for pure fair launch.</span></div>
+    </div>
+    <div class="tip-box"><p>Set team allocation to 0% for a true fair launch. This maximises community trust at the cost of no personal upside for the deployer. Most successful mission-driven tokens do this — it removes any "exit" narrative.</p></div>
+  </section>
+
+  <!-- SMART CONTRACT ARCHITECTURE -->
+  <section>
+    <div class="section-label sans">04 &nbsp;/&nbsp; Smart Contract Architecture</div>
+    <h2>The full Solidity build</h2>
+    <p>
+      Base is where you build the <strong>actual product</strong>. Four contracts, deployed in sequence, deliver the full $THELIST vision. All contracts use OpenZeppelin's audited base libraries. All contracts are open source and verified on Basescan before any marketing begins.
+    </p>
+
+    <h3>Contract 1 — TheListToken.sol</h3>
+    <p>The base ERC-20 token. Simple, clean, no backdoors. Fixed supply minted entirely in the constructor, ownership renounced immediately after deployment.</p>
+
+    <div class="sol-block">
+<span class="sc">// SPDX-License-Identifier: MIT</span><br>
+<span class="sk">pragma</span> <span class="st">solidity</span> ^0.8.20;<br>
+<br>
+<span class="sk">import</span> <span class="ss">"@openzeppelin/contracts/token/ERC20/ERC20.sol"</span>;<br>
+<span class="sk">import</span> <span class="ss">"@openzeppelin/contracts/access/Ownable.sol"</span>;<br>
+<br>
+<span class="sk">contract</span> <span class="st">TheListToken</span> <span class="sk">is</span> ERC20, Ownable {<br>
+&nbsp;&nbsp;<span class="sk">uint256 public constant</span> <span class="sv">MAX_SUPPLY</span> = <span class="sv">1_000_000_000</span> * <span class="sv">10</span>**<span class="sv">18</span>;<br>
+<br>
+&nbsp;&nbsp;<span class="sk">constructor</span>(<span class="st">address</span> <span class="sv">initialOwner</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ERC20(<span class="ss">"The List Coin"</span>, <span class="ss">"THELIST"</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Ownable(<span class="sv">initialOwner</span>) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="sc">// Mint entire supply to deployer for distribution</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;_mint(<span class="sv">initialOwner</span>, <span class="sv">MAX_SUPPLY</span>);<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;<span class="sc">// No mint function — supply is fixed forever</span><br>
+}<br>
+<br>
+<span class="sc">// After deployment, call renounceOwnership()</span><br>
+<span class="sc">// to permanently remove all admin control</span>
+    </div>
+
+    <h3>Contract 2 — TheListStaking.sol (core logic)</h3>
+    <p>The staking contract accepts $THELIST, tracks holder tiers, applies the Awareness Multiplier to APY, and distributes rewards from the staking pool. This is the heart of the project.</p>
+
+    <div class="sol-block">
+<span class="sc">// Simplified architecture — full contract is ~300 lines</span><br>
+<span class="sk">contract</span> <span class="st">TheListStaking</span> {<br>
+<br>
+&nbsp;&nbsp;<span class="sc">// Tier thresholds (in THELIST tokens)</span><br>
+&nbsp;&nbsp;<span class="st">uint256</span>[] <span class="sk">public</span> <span class="sv">tierThresholds</span> = [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="sv">100_000</span>e18,   <span class="sc">// Tier 1: Witness</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="sv">500_000</span>e18,   <span class="sc">// Tier 2: Investigator</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="sv">2_500_000</span>e18, <span class="sc">// Tier 3: Journalist</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="sv">10_000_000</span>e18 <span class="sc">// Tier 4: Patriot</span><br>
+&nbsp;&nbsp;];<br>
+<br>
+&nbsp;&nbsp;<span class="sc">// Base APY per tier (in basis points, 100 = 1%)</span><br>
+&nbsp;&nbsp;<span class="st">uint256</span>[] <span class="sk">public</span> <span class="sv">baseAPY</span> = [<span class="sv">1500</span>, <span class="sv">2200</span>, <span class="sv">3000</span>, <span class="sv">4000</span>];<br>
+<br>
+&nbsp;&nbsp;<span class="sc">// Awareness Points → multiplier (in basis points)</span><br>
+&nbsp;&nbsp;<span class="sk">mapping</span>(<span class="st">uint256</span> => <span class="st">uint256</span>) <span class="sk">public</span> <span class="sv">apMultiplier</span>;<br>
+&nbsp;&nbsp;<span class="sc">// e.g. 0 AP = 10000 (1.0x), 500 AP = 15000 (1.5x),</span><br>
+&nbsp;&nbsp;<span class="sc">//      1000 AP = 20000 (2.0x), 2500+ AP = 25000 (2.5x)</span><br>
+<br>
+&nbsp;&nbsp;<span class="sk">struct</span> <span class="st">StakeInfo</span> {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="st">uint256</span> amount;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="st">uint256</span> stakedAt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="st">uint256</span> lastClaim;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="st">uint256</span> awarenessPoints;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="st">uint256</span> epochAP; <span class="sc">// resets each epoch (14 days)</span><br>
+&nbsp;&nbsp;};<br>
+<br>
+&nbsp;&nbsp;<span class="sk">function</span> <span class="sf">stake</span>(<span class="st">uint256</span> <span class="sv">amount</span>) <span class="sk">external</span> { ... }<br>
+&nbsp;&nbsp;<span class="sk">function</span> <span class="sf">unstake</span>(<span class="st">uint256</span> <span class="sv">amount</span>) <span class="sk">external</span> { ... }<br>
+&nbsp;&nbsp;<span class="sk">function</span> <span class="sf">claimRewards</span>() <span class="sk">external</span> { ... }<br>
+&nbsp;&nbsp;<span class="sk">function</span> <span class="sf">submitAwarenessProof</span>(<span class="st">bytes32</span> <span class="sv">proofHash</span>, <span class="st">uint256</span> <span class="sv">apAmount</span>) <span class="sk">external</span> { ... }<br>
+&nbsp;&nbsp;<span class="sk">function</span> <span class="sf">verifyAwarenessProof</span>(<span class="st">address</span> <span class="sv">staker</span>, <span class="st">bool</span> <span class="sv">approved</span>) <span class="sk">external onlyOracle</span> { ... }<br>
+}
+    </div>
+
+    <h3>Contract 3 — TheListArchive.sol</h3>
+    <p>The on-chain document registry. Stores SHA-256 hashes of publicly released Epstein court documents, timestamped on Base, permanently and cheaply. Anyone can verify a document against the registry.</p>
+
+    <div class="sol-block">
+<span class="sk">contract</span> <span class="st">TheListArchive</span> {<br>
+&nbsp;&nbsp;<span class="sk">struct</span> <span class="st">Document</span> {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="st">bytes32</span> docHash;    <span class="sc">// SHA-256 of document content</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="st">string</span>  title;      <span class="sc">// Human-readable title</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="st">string</span>  sourceUrl;  <span class="sc">// Official source URL (court docket, etc)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="st">string</span>  ipfsCid;    <span class="sc">// IPFS mirror for permanence</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="st">uint256</span> addedAt;    <span class="sc">// Block timestamp</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="st">address</span> addedBy;    <span class="sc">// Which wallet submitted</span><br>
+&nbsp;&nbsp;};<br>
+<br>
+&nbsp;&nbsp;<span class="st">Document</span>[] <span class="sk">public</span> <span class="sv">archive</span>;<br>
+<br>
+&nbsp;&nbsp;<span class="sc">// Only Journalist tier (T3+) holders can submit new docs</span><br>
+&nbsp;&nbsp;<span class="sk">function</span> <span class="sf">addDocument</span>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="st">bytes32</span> <span class="sv">docHash</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="st">string</span> <span class="sk">calldata</span> <span class="sv">title</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="st">string</span> <span class="sk">calldata</span> <span class="sv">sourceUrl</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="st">string</span> <span class="sk">calldata</span> <span class="sv">ipfsCid</span><br>
+&nbsp;&nbsp;) <span class="sk">external onlyJournalistTier</span> { ... }<br>
+<br>
+&nbsp;&nbsp;<span class="sc">// Anyone can verify: did we register this document?</span><br>
+&nbsp;&nbsp;<span class="sk">function</span> <span class="sf">verifyDocument</span>(<span class="st">bytes32</span> <span class="sv">docHash</span>) <span class="sk">external view returns</span> (<span class="st">bool</span>) { ... }<br>
+}
+    </div>
+
+    <h3>Contract 4 — TheListDAO.sol</h3>
+    <p>Governor Bravo-pattern DAO for community governance. Controls the Awareness Fund multi-sig and DAO treasury. 48-hour timelock on all executions. Quorum: 4% of circulating supply.</p>
+
+    <div class="tip-box"><p>Use OpenZeppelin's Governor + TimelockController contracts as your base. They are battle-tested, audited, and reduce your custom code surface area significantly. Your developer should implement these, not build from scratch.</p></div>
+  </section>
+
+  <!-- STAKING -->
+  <section>
+    <div class="section-label sans">05 &nbsp;/&nbsp; Staking &amp; Awareness Multiplier</div>
+    <h2>On-chain yield for real-world action</h2>
+    <p>On Base, the Awareness Multiplier runs entirely on-chain. A staker submits a proof hash (SHA-256 of their evidence URL + wallet address + timestamp). An oracle network (initially a 7-member verifier committee, eventually Chainlink Functions) validates and approves the AP award. No off-chain database, no admin override.</p>
+
+    <h3>Staking Tiers</h3>
+    <table class="tier-table sans">
+      <thead><tr><th>Tier</th><th>Name</th><th>Min. Stake</th><th>Base APY</th><th>Max APY (2.5x)</th><th>On-Chain Perks</th></tr></thead>
+      <tbody>
+        <tr><td><span class="t-badge t0">0</span></td><td>Civilian</td><td>Any</td><td>—</td><td>—</td><td>Archive read access, governance snapshot</td></tr>
+        <tr><td><span class="t-badge t1">1</span></td><td>Witness</td><td>100,000</td><td>15%</td><td>37.5%</td><td>Governance vote, community badge NFT</td></tr>
+        <tr><td><span class="t-badge t2">2</span></td><td>Investigator</td><td>500,000</td><td>22%</td><td>55%</td><td>Awareness Fund vote, doc archive submit</td></tr>
+        <tr><td><span class="t-badge t3">3</span></td><td>Journalist</td><td>2,500,000</td><td>30%</td><td>75%</td><td>Oracle committee eligibility, grant proposals</td></tr>
+        <tr><td><span class="t-badge t4">4</span></td><td>Patriot</td><td>10,000,000</td><td>40%</td><td>100%</td><td>Council seat, contract upgrade veto, IRL events</td></tr>
+      </tbody>
+    </table>
+
+    <div class="warn-box"><p><strong>Note on APY sustainability:</strong> These rates are funded from the staking pool allocation (20% = 200M tokens). A financial model should be run by your developer before deployment to ensure the emission schedule sustains these rates for the intended period (3 years recommended).</p></div>
+  </section>
+
+  <!-- STEP BY STEP LAUNCH -->
+  <section>
+    <div class="section-label sans">06 &nbsp;/&nbsp; Step-by-Step Launch Guide</div>
+    <h2>From zero to live on Base mainnet</h2>
+    <p>Estimated total time for token launch: <strong>1–3 days</strong> (setup + deployment + verification). Full contract suite (staking + archive + DAO): <strong>2–6 weeks</strong> with a developer.</p>
+
+    <h3>Phase 1 — Environment Setup</h3>
+    <div class="step-grid">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Install MetaMask and add Base network</h4>
+          <p>Install MetaMask at metamask.io. In MetaMask, go to Settings → Networks → Add Network. Add Base Mainnet: RPC URL: https://mainnet.base.org — Chain ID: 8453 — Symbol: ETH — Explorer: https://basescan.org. Alternatively, Coinbase Wallet already has Base built in.</p>
+          <span class="step-cost">Cost: Free</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Fund your deployer wallet with ETH on Base</h4>
+          <p>You need ETH on the Base network (not Ethereum mainnet — Base ETH is cheaper). Bridge ETH from Ethereum mainnet via bridge.base.org, or buy ETH on Coinbase and withdraw directly to Base. You need approximately 0.01–0.05 ETH ($25–$150) for all deployment transactions.</p>
+          <span class="step-cost">Cost: ~0.02 ETH (~$50–$80)</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Set up Hardhat development environment</h4>
+          <p>On your computer, install Node.js (nodejs.org). Then in your terminal: npm install --save-dev hardhat @openzeppelin/contracts. Run npx hardhat init and choose "Create a TypeScript project." This is your local development environment for writing and testing contracts before deploying to mainnet.</p>
+          <span class="step-cost">Cost: Free</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>Get a Basescan API key</h4>
+          <p>Register at basescan.org. Go to API Keys in your account and create a new key. This is required for verifying your contract source code on Basescan — without verification, users cannot read your contract, which destroys trust.</p>
+          <span class="step-cost">Cost: Free</span>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:32px;">Phase 2 — Token Contract Deployment</h3>
+    <div class="step-grid">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Write TheListToken.sol</h4>
+          <p>Create the file contracts/TheListToken.sol with the ERC-20 code shown in Section 4. No modifications needed — this is the simplest possible implementation: fixed supply, no mint function, no blacklist, no transfer tax. Simplicity is a feature.</p>
+          <span class="step-cost">Cost: Free</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Test on Base Sepolia testnet first</h4>
+          <p>Deploy to Base Sepolia (the test network) before mainnet. Get free Sepolia ETH from the Base faucet at faucet.quicknode.com/base/sepolia. Deploy your contract there and verify it's working correctly. Never skip testnet — mainnet deployment mistakes cost real money and cannot be undone.</p>
+          <span class="step-cost">Cost: Free (test ETH)</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Deploy to Base mainnet via Hardhat</h4>
+          <p>Add your deployer wallet's private key to your Hardhat config (use a .env file, never commit keys to git). Configure the Base mainnet network in hardhat.config.ts. Run: npx hardhat run scripts/deploy.ts --network base. Save the contract address that's output.</p>
+          <span class="step-cost">Cost: ~0.005 ETH</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>Verify source code on Basescan</h4>
+          <p>Run: npx hardhat verify --network base YOUR_CONTRACT_ADDRESS YOUR_DEPLOYER_ADDRESS. This publishes your Solidity source code to Basescan, allowing anyone to read and audit it. A verified contract badge on Basescan is non-negotiable for community trust.</p>
+          <span class="step-cost">Cost: Free</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <h4>Distribute tokens to allocation wallets and renounce ownership</h4>
+          <p>Send the correct percentage of total supply to each allocation wallet: staking contract address (20%), Awareness Fund multi-sig (15%), DAO treasury (10%), DEX liquidity (50%), and team vesting contract if applicable (5%). Then call renounceOwnership() on the token contract. Once done, no one — including you — can ever mint new tokens or modify the contract.</p>
+          <span class="step-cost">Cost: ~0.002 ETH for transactions</span>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:32px;">Phase 3 — Liquidity Setup</h3>
+    <div class="step-grid">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Create Aerodrome liquidity pool</h4>
+          <p>Aerodrome (aerodrome.finance) is the dominant DEX on Base. Go to Liquidity → Create Pool. Select THELIST/WETH as your pair. Choose a Volatile pool type (for a new token with no stable peg). Set your initial price by choosing the ratio of tokens to ETH you provide. Approve THELIST spending, then add liquidity.</p>
+          <span class="step-cost">Cost: Your liquidity amount + ~$1 in ETH fees</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Lock LP tokens via Unicrypt</h4>
+          <p>Go to unicrypt.network and connect your wallet. Lock your Aerodrome LP tokens for a minimum of 1 year (2 years is better for trust). This proves to the community that you cannot remove liquidity (rug pull). Unicrypt will give you a lock certificate URL — share this in every community channel immediately.</p>
+          <span class="step-cost">Cost: ~1–2% of LP value as Unicrypt fee</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Verify on GeckoTerminal and DEXScreener</h4>
+          <p>Your token will appear on GeckoTerminal and DEXScreener automatically once the pool has trading activity. Update the token info on both platforms: add your logo (PNG, square, min 250×250px), description, and social links. Both platforms charge a small fee (payable in ETH or their native tokens) to update token info.</p>
+          <span class="step-cost">Cost: ~$20–$50 total</span>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:32px;">Phase 4 — Multi-sig Setup</h3>
+    <div class="step-grid">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Create a Safe multi-sig for the Awareness Fund</h4>
+          <p>Go to app.safe.global and select Base network. Create a new Safe with a 3-of-5 configuration: you need 3 of 5 keyholders to approve any transaction. The 5 keyholders should be trusted community members with verifiable identities or reputations — not just anonymous wallets. Publish all 5 wallet addresses publicly.</p>
+          <span class="step-cost">Cost: ~$1 in ETH</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Transfer Awareness Fund allocation to Safe</h4>
+          <p>Send the 15% Awareness Fund allocation from your deployer wallet to the Safe multi-sig address. From this point, no single person can move these funds — 3 of 5 keyholders must sign every transaction. This is the standard for credible DeFi projects.</p>
+          <span class="step-cost">Cost: ~$0.10 in ETH fees</span>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:32px;">Phase 5 — Staking Contract Deployment</h3>
+    <p>The staking contract is the most complex piece. Options for getting it built:</p>
+    <div class="tool-grid">
+      <div class="tool-card">
+        <h4>Hire a Solidity developer</h4>
+        <span class="tool-url">Timeline: 2–4 weeks · $3K–$12K</span>
+        <p>Find on Upwork, Toptal, or the OpenZeppelin Discord. Ask for: Anchor staking template adaptation, tiered APY logic, Awareness Points oracle integration, test suite, and Basescan verification.</p>
+      </div>
+      <div class="tool-card">
+        <h4>Use a no-code staking tool</h4>
+        <span class="tool-url">Magna.so · Sablier · Streamflow</span>
+        <p>Magna (magna.so) is a Base-native tool for token vesting and basic staking. Sablier offers streaming payments. Neither supports Awareness Multiplier natively but gets basic staking live immediately.</p>
+      </div>
+      <div class="tool-card">
+        <h4>OpenZeppelin Contracts Wizard</h4>
+        <span class="tool-url">wizard.openzeppelin.com</span>
+        <p>Generates boilerplate Solidity for ERC-20, Governor, and custom contracts. Start here to get 60% of the staking contract written, then have a developer complete the Awareness logic.</p>
+      </div>
+      <div class="tool-card">
+        <h4>Get a security audit</h4>
+        <span class="tool-url">Before mainnet deployment</span>
+        <p>Once the staking contract is written, get it audited. Code4rena (code4rena.com) runs community audits starting at ~$10K. For smaller budgets, SolidProof or QuillAudits offer solo audits from ~$3K.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:32px;">Phase 6 — No-Code Option: Uniswap v3 + Tokentool</h3>
+    <p>If you want to launch quickly on Base without writing any code, this path gets you live in under an hour:</p>
+    <div class="step-grid">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Use Tokentool by Bitbond</h4>
+          <p>Go to tokentool.bitbond.com. Select Base mainnet. Fill in: Name "The List Coin", Symbol "THELIST", Supply "1000000000", Decimals "18". Choose "No Mint" and "No Burn". Deploy — they handle the Solidity for you. Costs a small ETH fee plus their service fee (~0.1 ETH).</p>
+          <span class="step-cost">Cost: ~0.1 ETH service fee</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Create Uniswap v3 pool on Base</h4>
+          <p>Go to app.uniswap.org, switch to Base network, go to Pool → New Position. Select your token and WETH. Choose a 1% fee tier (standard for new tokens). Set your price range and deposit liquidity. Uniswap v3 is on Base and works identically to Ethereum mainnet.</p>
+          <span class="step-cost">Cost: Your liquidity amount</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOLS -->
+  <section>
+    <div class="section-label sans">07 &nbsp;/&nbsp; Essential Tools &amp; Resources</div>
+    <h2>Everything you need, bookmarked</h2>
+    <div class="tool-grid">
+      <div class="tool-card"><h4>MetaMask</h4><span class="tool-url">metamask.io</span><p>Primary wallet for Base/EVM. Add Base network in settings.</p></div>
+      <div class="tool-card"><h4>Coinbase Wallet</h4><span class="tool-url">wallet.coinbase.com</span><p>Has Base built in natively. Best for reaching Coinbase users.</p></div>
+      <div class="tool-card"><h4>Basescan</h4><span class="tool-url">basescan.org</span><p>Base block explorer. Verify your contract source code here.</p></div>
+      <div class="tool-card"><h4>Aerodrome</h4><span class="tool-url">aerodrome.finance</span><p>Dominant DEX on Base. Create your main liquidity pool here.</p></div>
+      <div class="tool-card"><h4>Uniswap v3</h4><span class="tool-url">app.uniswap.org</span><p>Also available on Base. Alternative or secondary liquidity pool.</p></div>
+      <div class="tool-card"><h4>Unicrypt</h4><span class="tool-url">unicrypt.network</span><p>Lock your LP tokens here to prove no rug pull.</p></div>
+      <div class="tool-card"><h4>Safe (Gnosis)</h4><span class="tool-url">app.safe.global</span><p>Multi-sig wallet for Awareness Fund. Industry standard.</p></div>
+      <div class="tool-card"><h4>Hardhat</h4><span class="tool-url">hardhat.org</span><p>Solidity development framework. Deploy and verify contracts.</p></div>
+      <div class="tool-card"><h4>OpenZeppelin</h4><span class="tool-url">openzeppelin.com</span><p>Audited Solidity contract libraries. Use for all base contracts.</p></div>
+      <div class="tool-card"><h4>GeckoTerminal</h4><span class="tool-url">geckoterminal.com</span><p>Real-time charts. Update token info after pool is live.</p></div>
+      <div class="tool-card"><h4>Tokentool</h4><span class="tool-url">tokentool.bitbond.com</span><p>No-code token deployment on Base. For non-developers.</p></div>
+      <div class="tool-card"><h4>Pinata</h4><span class="tool-url">pinata.cloud</span><p>IPFS pinning for your token logo and document archive.</p></div>
+    </div>
+  </section>
+
+  <!-- COSTS -->
+  <section>
+    <div class="section-label sans">08 &nbsp;/&nbsp; Full Cost Breakdown</div>
+    <h2>Honest numbers for Base</h2>
+    <table class="cost-table sans">
+      <thead><tr><th>Item</th><th>Cost (USD)</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>ETH on Base for deployment fees</td><td class="cost-amount">$50–$100</td><td>Covers all contract deployments</td></tr>
+        <tr><td>Token contract deployment (Hardhat)</td><td class="cost-amount">~$5–$15</td><td>Single Basescan-verified contract</td></tr>
+        <tr><td>Token contract (no-code, Tokentool)</td><td class="cost-amount">~$150–$300</td><td>Service fee — easier but costs more</td></tr>
+        <tr><td>Aerodrome pool creation</td><td class="cost-amount">&lt;$1</td><td>Base fees are nearly zero</td></tr>
+        <tr><td>Unicrypt LP lock</td><td class="cost-amount">~1–2% of LP</td><td>E.g. $200 on a $10K liquidity seed</td></tr>
+        <tr><td>Safe multi-sig setup</td><td class="cost-amount">~$1</td><td>Nearly free on Base</td></tr>
+        <tr><td>DEXScreener/GeckoTerminal info</td><td class="cost-amount">$20–$50</td><td>Token logo + description update</td></tr>
+        <tr><td>Domain and hosting</td><td class="cost-amount">$1–$15/yr</td><td>Vercel free, domain via Namecheap</td></tr>
+        <tr><td>Initial DEX liquidity seed</td><td class="cost-amount">$500–$5,000+</td><td>More liquidity = better price stability</td></tr>
+        <tr><td>Staking contract development</td><td class="cost-amount">$3,000–$12,000</td><td>Core product — do not skip</td></tr>
+        <tr><td>Security audit (optional but recommended)</td><td class="cost-amount">$3,000–$15,000</td><td>Code4rena or SolidProof</td></tr>
+        <tr><td><strong>Minimum viable launch (no-code)</strong></td><td class="cost-amount">~$500–$1,000</td><td>Token + pool + LP lock + community</td></tr>
+        <tr><td><strong>Full build (with staking + audit)</strong></td><td class="cost-amount">~$10,000–$30,000</td><td>Complete product as described in whitepaper</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ROADMAP -->
+  <section>
+    <div class="section-label sans">09 &nbsp;/&nbsp; Base Roadmap</div>
+    <h2>Building the real thing</h2>
+    <div class="roadmap">
+      <div class="rm-item">
+        <div class="rm-dot done"></div>
+        <div class="rm-phase">Week 1–2 — Foundation</div>
+        <div class="rm-title">Token live · Liquidity locked · Multi-sig up</div>
+        <ul class="rm-items">
+          <li>Deploy TheListToken.sol, verify on Basescan</li>
+          <li>Seed Aerodrome THELIST/WETH pool, lock LP via Unicrypt</li>
+          <li>Set up 3-of-5 Safe multi-sig for Awareness Fund</li>
+          <li>Launch X, Telegram, Discord, website</li>
+          <li>Publish all wallet addresses, LP lock URL, contract addresses</li>
+        </ul>
+      </div>
+      <div class="rm-item">
+        <div class="rm-dot"></div>
+        <div class="rm-phase">Week 3–8 — Core Build</div>
+        <div class="rm-title">Staking contract · Archive contract · DAO setup</div>
+        <ul class="rm-items">
+          <li>Develop and audit TheListStaking.sol (Awareness Multiplier + tiered APY)</li>
+          <li>Deploy TheListArchive.sol — first 7 Epstein documents registered on-chain</li>
+          <li>Deploy Governor + TimelockController for DAO governance</li>
+          <li>Launch Awareness Points portal — first community submissions</li>
+          <li>First Awareness Fund grant proposal and vote</li>
+        </ul>
+      </div>
+      <div class="rm-item">
+        <div class="rm-dot"></div>
+        <div class="rm-phase">Month 3 — Ecosystem</div>
+        <div class="rm-title">DEX listings · Chainlink integration · Media partners</div>
+        <ul class="rm-items">
+          <li>Integrate Chainlink Functions for decentralised AP verification oracle</li>
+          <li>Apply to CoinGecko and CoinMarketCap for listing</li>
+          <li>Apply to MEXC, Gate.io — first centralised exchange listings</li>
+          <li>First Awareness Fund-backed investigative journalism piece published</li>
+        </ul>
+      </div>
+      <div class="rm-item">
+        <div class="rm-dot"></div>
+        <div class="rm-phase">Month 4+ — Scale</div>
+        <div class="rm-title">Global reach · Full DAO autonomy · Legacy infrastructure</div>
+        <ul class="rm-items">
+          <li>International community expansion (ES, PT, DE, FR, JA)</li>
+          <li>FOIA Action Fund first filing — community-voted legal action</li>
+          <li>$THELIST Annual Journalism Prize established and funded</li>
+          <li>Full DAO autonomy — founders remove all remaining admin keys</li>
+          <li>Explore cross-chain bridge to Solana for combined liquidity</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="disclaimer">
+  <div class="container">
+    <p><strong>Legal Disclaimer</strong> — $THELIST is a speculative memecoin. Nothing in this document constitutes financial, legal, or investment advice. Cryptocurrency assets can lose all value. All references to "Epstein Files" concern materials already in the public domain through lawful court proceedings and government disclosure. This project makes no original allegations and publishes no private information. The Solidity code shown is illustrative and requires professional development and security auditing before mainnet deployment. For informational and entertainment purposes only.</p>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <span class="footer-logo">$THELIST</span>
+    <p>The List Coin &nbsp;·&nbsp; Base Edition &nbsp;·&nbsp; ERC-20 · 1,000,000,000 Supply</p>
+    <p style="margin-top:12px; font-size:11px;">Whitepaper v1.0 — Community-owned. Founder-free. Truth-focused.</p>
+  </div>
+</footer>
+</body>
+</html>
